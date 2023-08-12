@@ -1,0 +1,5 @@
+/venv
+.env
+/planning
+/__pycache__
+__pycache__/
