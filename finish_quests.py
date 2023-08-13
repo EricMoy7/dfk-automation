@@ -17,15 +17,18 @@ import utils.rpcs as RPCS
 
 load_dotenv()
 
-def finish_quests():
-    serendale2_rpc_server = RPCS.SERENDALE2_RPC_SERVER
-    crystalvale_rpc_server = RPCS.CRYSTALVALE_RPC_SERVER
+def finish_quests(network):
+    match network:
+        case "SERENDALE2":
+            rpc = RPCS.SERENDALE2_RPC_SERVER
+        case "CRYSTALVALE":
+            rpc = RPCS.CRYSTALVALE_RPC_SERVER
+        case _ :
+            raise ValueError('The network given could not match a known RPC server.')
 
-    account_address = os.environ["ACCOUNT_ADDRESS"]
-    # Remove
     private_key = os.environ["PRIVATE_KEY"]
-    w3_serendale2 = Web3(Web3.HTTPProvider(serendale2_rpc_server))
-    w3_crystalvale = Web3(Web3.HTTPProvider(crystalvale_rpc_server))
+    w3 = Web3(Web3.HTTPProvider(rpc))
+    account_address = w3.eth.account.from_key(private_key).address
 
 
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
@@ -34,15 +37,13 @@ def finish_quests():
     logger.setLevel(logging.DEBUG)
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
-    InstanceHero = Heroes(hero_core.CRYSTALVALE_CONTRACT_ADDRESS, 'https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc', logger)
-    InstanceQuest = Quest(quest_core_v3.CRYSTALVALE_CONTRACT_ADDRESS, 'https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc', logger)
+    # InstanceHero = Heroes(hero_core.CRYSTALVALE_CONTRACT_ADDRESS, rpc, logger)
+    InstanceQuest = Quest(quest_core_v3.CRYSTALVALE_CONTRACT_ADDRESS, rpc, logger)
 
 
     active_quests = InstanceQuest.get_active_quests(account_address)
     finished_active_quests = list(filter(lambda x: x[7] < time.time(), active_quests))
-    len(finished_active_quests)
 
-    gas_price_gwei_serendale = {'maxFeePerGas': 55, 'maxPriorityFeePerGas': 25}  # EIP-1559
     gas_price_gwei_crystalvale = {'maxFeePerGas': 30, 'maxPriorityFeePerGas': 10}  # EIP-1559
     tx_timeout = 30
 
