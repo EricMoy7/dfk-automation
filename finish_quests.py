@@ -49,7 +49,7 @@ def finish_quests(network):
 
     if len(finished_active_quests) > 0:
         for quest in finished_active_quests:
-            tx_receipt = InstanceQuest.complete_quest(quest[3][0], private_key, w3_crystalvale.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
+            tx_receipt = InstanceQuest.complete_quest(quest[3][0], private_key, w3.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
             quest_result = InstanceQuest.parse_complete_quest_receipt(tx_receipt)
             quest_rewards = quest_utils.human_readable_quest_results(quest_result, very_human=True)
             logger.info("Rewards: {}".format(str(quest_rewards)))
