@@ -2,7 +2,7 @@ import logging
 import time
 import sys
 from web3 import Web3
-from dotenv import load_dotenv
+
 import os
 import time
 
@@ -14,8 +14,6 @@ from dfktools.quests.quest_v3 import Quest
 from dfktools.quests.utils import utils as quest_utils
 
 import utils.rpcs as RPCS
-
-load_dotenv()
 
 def finish_quests(network):
     match network:
@@ -36,6 +34,8 @@ def finish_quests(network):
     logger = logging.getLogger("DFK-hero")
     logger.setLevel(logging.DEBUG)
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
+
+    logger.info("Finishing Quests")
 
     # InstanceHero = Heroes(hero_core.CRYSTALVALE_CONTRACT_ADDRESS, rpc, logger)
     InstanceQuest = Quest(quest_core_v3.CRYSTALVALE_CONTRACT_ADDRESS, rpc, logger)
