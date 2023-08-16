@@ -62,35 +62,42 @@ def start_quests():
         'gardening': quest_core_v3.QUEST_TYPE_GARDENING
     }
 
-    for key, quest_type in professions.items():
-        active_quests = InstanceQuest.get_active_quests(account_address)
-        active_heroes = list(itertools.chain.from_iterable([hero[3] for hero in active_quests]))
-        prof_heros = list(filter(lambda x: x.get('info').get('statGenes').get('profession') == key 
-                                and InstanceQuest.get_current_stamina(x.get('id')) >= 25
-                                and x.get('id') not in active_heroes, hero_list))
-        
-        if len(prof_heros) > 0:
-            hero_ids = [hero.get('id') for hero in prof_heros]
+    lvl_bracket = [(0,9), (10,20)]
 
-            # gas_price_gwei_serendale = {'maxFeePerGas': 55, 'maxPriorityFeePerGas': 25}  # EIP-1559
-            gas_price_gwei_crystalvale = {'maxFeePerGas': 55, 'maxPriorityFeePerGas': 25}  # EIP-1559
-            tx_timeout = 30
+    for lvls in lvl_bracket:
+        logger.info(f'Starting quest for heroes from {lvls[0]} to {lvls[1]}')
+        for key, quest_type in professions.items():
+            active_quests = InstanceQuest.get_active_quests(account_address)
+            active_heroes = list(itertools.chain.from_iterable([hero[3] for hero in active_quests]))
+            prof_heros = list(filter(lambda x: x.get('info').get('statGenes').get('profession') == key 
+                                    and InstanceQuest.get_current_stamina(x.get('id')) >= 25
+                                    and x.get('id') not in active_heroes
+                                    and x.get('state').get('level') >= lvls[0]
+                                    and x.get('state').get('level') <= lvls[1],
+                                    hero_list))
+            
+            if len(prof_heros) > 0:
+                hero_ids = [hero.get('id') for hero in prof_heros]
 
-            attempts = 25 if key == 'gardening' or key == 'mining' else 5
-            level = 0
-            n = 2 if key == 'gardening' else 6
+                # gas_price_gwei_serendale = {'maxFeePerGas': 55, 'maxPriorityFeePerGas': 25}  # EIP-1559
+                gas_price_gwei_crystalvale = {'maxFeePerGas': 20, 'maxPriorityFeePerGas': 2}  # EIP-1559
+                tx_timeout = 30
 
-            for chunk in [hero_ids[i:i+n] for i in range(0, len(hero_ids), n)]:
-                print(f'Processing chunk {chunk}')
-                InstanceQuest.start_quest(chunk, 
-                                        # Type needs to be changed as well
-                                        quest_type, 
-                                        attempts, 
-                                        level,
-                                        1 if key == 'gardening' else 0, 
-                                        private_key, 
-                                        w3_crystalvale.eth.get_transaction_count(account_address), 
-                                        gas_price_gwei_crystalvale, 
-                                        tx_timeout)
-        else:
-            logger.info(f'No {key} heroes available')
+                attempts = 25 if key == 'gardening' or key == 'mining' else 5
+                level = 10 if lvls == (10,20) else 0
+                n = 2 if key == 'gardening' else 6
+
+                for chunk in [hero_ids[i:i+n] for i in range(0, len(hero_ids), n)]:
+                    print(f'Processing chunk {chunk}')
+                    InstanceQuest.start_quest(chunk, 
+                                            # Type needs to be changed as well
+                                            quest_type, 
+                                            attempts, 
+                                            level,
+                                            1 if key == 'gardening' else 0, 
+                                            private_key, 
+                                            w3_crystalvale.eth.get_transaction_count(account_address), 
+                                            gas_price_gwei_crystalvale, 
+                                            tx_timeout)
+            else:
+                logger.info(f'No {key} heroes available')
