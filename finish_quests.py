@@ -44,7 +44,7 @@ def finish_quests(network):
     active_quests = InstanceQuest.get_active_quests(account_address)
     finished_active_quests = list(filter(lambda x: x[7] < time.time(), active_quests))
 
-    gas_price_gwei_crystalvale = {'maxFeePerGas': 30, 'maxPriorityFeePerGas': 10}  # EIP-1559
+    gas_price_gwei_crystalvale = {'maxFeePerGas': 20, 'maxPriorityFeePerGas': 2}  # EIP-1559
     tx_timeout = 30
 
     if len(finished_active_quests) > 0:
