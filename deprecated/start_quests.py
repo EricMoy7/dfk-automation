@@ -86,7 +86,7 @@ def start_quests():
                 gas_price_gwei_crystalvale = {'maxFeePerGas': 25, 'maxPriorityFeePerGas': 2}  # EIP-1559
                 tx_timeout = 30
 
-                attempts = 25 if key == 'gardening' or key == 'mining' else 5
+                attempts = 25 if key == 'mining' else 5
                 level = 10 if lvls == (100,500) else 0
                 n = 2 if key == 'gardening' else 6
 
