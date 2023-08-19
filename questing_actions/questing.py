@@ -44,7 +44,8 @@ class Questing:
     def generate_quest_object(self):
         self.InstanceQuest = Quest(NetData.networks.get(self.network_name).get('ContractQuest'), self.rpc, self.logger)
 
-    
+    def generate_hero_object(self):
+        self.InstanceHero = Heroes(NetData.networks.get(self.network_name).get('HeroQuest'), self.rpc, self.logger)
 
     def get_active_quests(self):
         # Not sure if quest instance updates if used again for active quests
