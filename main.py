@@ -10,11 +10,8 @@ load_dotenv()
 
 async def start():
     while True:
-        try:
-            start_quests()
-        except:
-            continue
-        await asyncio.sleep(600)
+        start_quests()
+        await asyncio.sleep(300)
 
 async def finish():
     while True:
@@ -22,7 +19,7 @@ async def finish():
             finish_quests("CRYSTALVALE")
         except:
             continue
-        await asyncio.sleep(600)
+        await asyncio.sleep(300)
 
 async def async_main():
     res = await asyncio.gather(start(), finish())
