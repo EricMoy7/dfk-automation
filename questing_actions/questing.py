@@ -47,6 +47,26 @@ class Questing:
     def generate_hero_object(self):
         self.InstanceHero = Heroes(NetData.networks.get(self.network_name).get('HeroQuest'), self.rpc, self.logger)
 
+    def generate_player_hero_list(self):
+        with open('../hero/femaleFirstName.json', 'r') as f:
+            female_first_names = hero_utils.parse_names(f.read())
+
+        with open('../hero/maleFirstName.json', 'r') as f:
+            male_first_names = hero_utils.parse_names(f.read())
+
+        with open('../hero/lastName.json', 'r') as f:
+            last_names = hero_utils.parse_names(f.read())
+
+        my_heroes = self.InstanceHero.get_users_heroes(self.account_address)
+        hero_list = []
+        for idx, hero in enumerate(my_heroes):
+            # logger.info("Processing crystalvale hero #" + str(idx))
+            hero = self.InstanceHero.get_hero(hero)
+            readable_hero = self.InstanceHero.human_readable_hero(hero, male_first_names, female_first_names, last_names)
+            hero_list.append(readable_hero)
+        self.player_heroes = hero_list
+        return self.player_heroes
+
     def get_active_quests(self):
         # Not sure if quest instance updates if used again for active quests
         # TODO: Check if active quests are refreshed if using same quest object instance
