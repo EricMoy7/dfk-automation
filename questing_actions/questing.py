@@ -18,6 +18,17 @@ import utils.net as NetData
 from dotenv import load_dotenv
 
 class Questing:
+    """
+    A class used to represent basic questing in DefiKingdoms
+
+    Attributes
+    ----------
+
+
+    Methods
+    -------
+    
+    """
     def __init__(self, network_name, logger, tx_timeout = 30 ):
         load_dotenv()
         self.rpc = self.decode_rpc(network_name)
@@ -104,7 +115,7 @@ class Questing:
         return self.ready_hero_list
 
     
-    def filter_ready_prof_0(self, quest_name):      
+    def filter_ready_prof_0(self, quest_name):
         return list(filter(lambda hero: hero.get('professions').get(quest_name.lower()) < 100,
                                     self.ready_hero_list))
         
