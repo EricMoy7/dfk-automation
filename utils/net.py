@@ -15,6 +15,15 @@ networks = {
                         },
                         'Foraging': {
                             'ID': 2
+                        },
+                        'Gold_Mining': {
+                            'ID': 3
+                        },
+                        'Token_Mining': {
+                            'ID': 4
+                        },
+                        'Gardening': {
+                            'ID': 5
                         }
                     }
                     }
