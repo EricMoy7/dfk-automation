@@ -16,7 +16,7 @@ networks = {
                         'Foraging': {
                             'ID': 2
                         },
-                        'Gold_Mining': {
+                        'Mining': {
                             'ID': 3
                         },
                         'Token_Mining': {

@@ -14,10 +14,7 @@ logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
 while True:
     try:
-        Quester = Questing(
-            # Network, QuestId, Attempts, Pool, logger
-            'Crystalvale',
-            logger)
+        Quester = Questing('Crystalvale',logger)
         
         Gardener = Gardening('Crystalvale', logger)
 
@@ -49,6 +46,11 @@ while True:
         Gardener.run_batches(lvl0_gardeners_dist, 0, 25, 'Gardening')
         Gardener.run_batches(lvl10_gardeners_dist, 10, 25, 'Gardening')
 
+        logger.info('Starting Gold Mining Quests')
+        ready_miners = Quester.filter_active_heroes(25, 'Mining')
+        Quester.run_batches(Quester.chunk_hero_list(Quester.readable_hero_to_idlist(ready_miners), 6), 0, 25, 'Mining')
+
+        logger.info('Attempting to finish quests')
         Quester.finish_completed_quests()
 
         for remaining in range(600, 0, -1):
