@@ -1,5 +1,6 @@
 from questing_actions.questing import Questing
 from questing_actions.gardening import Gardening
+from questing_actions.mining import Mining
 
 import logging
 import time
@@ -15,7 +16,7 @@ logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 while True:
     try:
         Quester = Questing('Crystalvale',logger)
-        
+        Miner = Mining('Crystalvale', logger)
         Gardener = Gardening('Crystalvale', logger)
 
         Quester.generate_player_hero_list()
@@ -47,8 +48,8 @@ while True:
         Gardener.run_batches(lvl10_gardeners_dist, 10, 25, 'Gardening')
 
         logger.info('Starting Gold Mining Quests')
-        ready_miners = Quester.filter_active_heroes(25, 'Mining')
-        Quester.run_batches(Quester.chunk_hero_list(Quester.readable_hero_to_idlist(ready_miners), 6), 0, 25, 'Mining')
+        ready_miners = Miner.filter_active_heroes(25, 'Mining')
+        Miner.run_batches(Miner.chunk_hero_list(Miner.readable_hero_to_idlist(ready_miners), 6), 0, 25, 'Mining')
 
         logger.info('Attempting to finish quests')
         Quester.finish_completed_quests()

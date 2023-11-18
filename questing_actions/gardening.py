@@ -10,14 +10,15 @@ class Gardening(Questing):
     
     def get_active_pools(self):
         active_quests = super().get_active_quests()
-        self.active_pool_ids = list(map(lambda x: x[9], active_quests))
+        active_gardening_quests = list(filter(lambda x: x[1] == 5, active_quests))
+        self.active_pool_ids = list(map(lambda x: x[10], active_gardening_quests))
         return self.active_pool_ids
     
     def hero_distributed_pools(self, hero_list):
         if not hasattr(self, 'active_pool_ids'):
             self.get_active_pools()
         
-        gardening_pool_ids = range(1,13)
+        gardening_pool_ids = range(1,14)
 
         occurances = list(map(lambda x: self.active_pool_ids.count(x), gardening_pool_ids))
 
@@ -31,7 +32,7 @@ class Gardening(Questing):
             for i, pool_occurances in enumerate(occurances):
                 if (pool_occurances < j) and len(batches) > 0:
                     occurances[i] += 1
-                    distributed_heroes.append((batches[0], i))
+                    distributed_heroes.append((batches[0], i+1))
                     batches.pop(0)
             j += 1
         
