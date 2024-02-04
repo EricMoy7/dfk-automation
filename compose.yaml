@@ -1,0 +1,8 @@
+services:
+    main:
+        container_name: dfk-automation-main
+        restart: always
+        build:
+            context: .
+            dockerfile: Dockerfile
+        env_file: .env

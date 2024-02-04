@@ -41,7 +41,7 @@ class Questing:
         self.account_address = self.w3.eth.account.from_key(private_key).address
         self.tx_timeout = tx_timeout
 
-        self.gas = {'maxFeePerGas': 27, 'maxPriorityFeePerGas': 2}
+        self.gas = {'maxFeePerGas': 30, 'maxPriorityFeePerGas': 2}
 
         self.generate_quest_object()
         self.generate_hero_object()
@@ -139,7 +139,6 @@ class Questing:
                                                 self.gas, 
                                                 self.tx_timeout)
                 except Exception as error:
-                    print(error)
                     continue
     
     def finish_completed_quests(self):

@@ -6,6 +6,8 @@ import logging
 import time
 import sys
 
+print('THIS IS A TEST TO SEE IF DOCKER COMPOSE WORKS')
+
 log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
 
 logger = logging.getLogger("DFK-hero")
