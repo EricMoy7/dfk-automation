@@ -5,15 +5,22 @@ from questing_actions.mining import Mining
 import logging
 import time
 import sys
+from logging.handlers import TimedRotatingFileHandler
+import warnings
 
-print('THIS IS A TEST TO SEE IF DOCKER COMPOSE WORKS')
+warnings.filterwarnings('ignore') 
+
+log_handler = TimedRotatingFileHandler('runtime.log', when='D', interval=1, 
+                                       backupCount=10, encoding='utf-8', delay=False)
 
 log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
+log_handler.setFormatter(log_format)
 
 logger = logging.getLogger("DFK-hero")
 logger.setLevel(logging.DEBUG)
-logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
+logger.addHandler(log_handler)
+logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
 while True:
     try:
@@ -63,6 +70,6 @@ while True:
             time.sleep(1)
     
     except Exception as Error:
-        logger.warn(Error)
+        # logger.warn(Error)
         continue
 

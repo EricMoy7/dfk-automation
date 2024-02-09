@@ -104,7 +104,7 @@ def start_quests():
                                             gas_price_gwei_crystalvale, 
                                             tx_timeout)
                     except Exception as error:
-                        logger.warn(error)
+                        # logger.warn(error)
                         continue
 
             else:

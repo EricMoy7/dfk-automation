@@ -55,7 +55,7 @@ class Gardening(Questing):
                                                 self.gas, 
                                                 self.tx_timeout)
                 except Exception as error:
-                    print(error)
+                    # print(error)
                     continue
 
     
